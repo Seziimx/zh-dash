@@ -74,6 +74,8 @@ author_options = [{"label": f"{a} ({int(author_counts[a])})", "value": a} for a 
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
 app.title = "Zh Scopus — Жубанов"
 
+server = app.server
+
 # Helper: default year range
 years_nonnull = df["year"].dropna().astype(int)
 if len(years_nonnull) > 0:
