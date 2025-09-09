@@ -1,5 +1,6 @@
-dash
-pandas
-numpy
-openpyxl
-plotly
+dash==2.18.1
+pandas==2.2.2
+numpy==1.26.4
+openpyxl==3.1.5
+plotly==5.24.1
+gunicorn==23.0.0
