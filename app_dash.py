@@ -1,4 +1,4 @@
-# app_dash.py
+# app_dash.py 
 import dash
 from dash import dcc, html, dash_table, Input, Output, State, ctx
 import pandas as pd
@@ -6,6 +6,7 @@ import numpy as np
 import plotly.express as px
 from io import BytesIO
 from datetime import datetime
+
 
 # ----------------------
 # Load & prepare data
@@ -314,5 +315,33 @@ def render_tabs(n_clicks, search, preset_years, year_range, sources, authors,
     return html.Div("Нет данных")
 
 # ----------------------
+
+@app.callback(
+    Output("download-dataframe", "data"),
+    Input("export_csv", "n_clicks"),
+    Input("export_xlsx", "n_clicks"),
+    State("search", "value"),
+    State("preset_years", "value"),
+    State("year_range", "value"),
+    State("source_filter", "value"),
+    State("author_filter", "value"),
+    State("quartile_filter", "value"),
+    State("percentile_range", "value"),
+    State("sort_by", "value"),
+    prevent_initial_call=True
+)
+def export_data(n_csv, n_xlsx, search, preset_years, year_range, sources, authors,
+                quartiles, percentile_range, sort_by):
+    filtered = apply_filters(df, search, preset_years, year_range, sources, authors,
+                             quartiles, percentile_range, sort_by)
+    filtered = filtered.reset_index(drop=True)
+    filtered.insert(0, "№", range(1, len(filtered) + 1))
+
+    trigger_id = ctx.triggered_id
+    if trigger_id == "export_csv":
+        return dcc.send_data_frame(filtered.to_csv, f"Zh_Scopus_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv", index=False)
+    elif trigger_id == "export_xlsx":
+        return dcc.send_data_frame(filtered.to_excel, f"Zh_Scopus_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx", index=False, engine="openpyxl")
+
 if __name__ == "__main__":
     app.run_server(debug=True)
