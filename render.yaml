@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: zh-scopus
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app_dash:server
+    plan: free
