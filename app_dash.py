@@ -1,11 +1,10 @@
 # app_dash.py
 import dash
-from dash import dcc, html, dash_table, Input, Output, State
+from dash import dcc, html, dash_table, Input, Output, State, ctx
 import pandas as pd
 import numpy as np
 import plotly.express as px
 from io import BytesIO
-from dash import ctx
 import base64
 from datetime import datetime
 
@@ -57,6 +56,7 @@ def load_data(path="data/zhubanov_scopus_issn.xlsx", sheet="ARTICLE"):
 
     return df
 
+
 df = load_data()
 
 # Precompute options with counts for sources and authors
@@ -88,6 +88,7 @@ app.layout = html.Div([
     html.Div([
         html.H2("Zh Scopus — портал публикаций", style={"marginBottom": "6px"}),
         html.Div("Университет Жубанова • Аналитика Scopus", style={"color": "#666", "marginBottom": "12px"}),
+
         # Sidebar filters
         html.H4("Фильтры"),
         dcc.Input(id="search", type="text", placeholder="Поиск (автор/название/источник)", debounce=True,
@@ -122,7 +123,7 @@ app.layout = html.Div([
 
         html.Label("Процентиль 2024"),
         dcc.RangeSlider(id="percentile_range", min=0, max=100, value=[0, 100], step=1,
-                        marks={0: "0", 50: "50", 100: "100"}, style={"marginBottom": "12px"}),
+                        marks={0: "0", 50: "50", 100: "100"}),
 
         html.Label("Сортировка"),
         dcc.Dropdown(id="sort_by",
@@ -166,6 +167,7 @@ app.layout = html.Div([
         html.Div(id="tab_content", style={"padding": "16px"})
     ], style={"marginLeft": "340px", "padding": "16px"})
 ])
+
 
 # ----------------------
 # Helper: filtering logic
