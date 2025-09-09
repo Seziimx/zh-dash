@@ -1,6 +1,9 @@
-dash
-pandas
-numpy
-openpyxl
-plotly
-gunicorn
+dash>=2.17.1
+dash-core-components>=2.0.0
+dash-html-components>=2.0.0
+dash-bootstrap-components>=1.6.0
+plotly>=5.22.0
+pandas>=2.2.2
+openpyxl>=3.1.2
+numpy>=1.26.4
+gunicorn>=21.2.0
